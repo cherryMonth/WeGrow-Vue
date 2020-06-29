@@ -5,8 +5,8 @@ import router from './router'
 import './assets/css/global.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import axios from 'axios'
-import vuetify from './plugins/vuetify'
 import './plugins/element.js'
+import vuetify from './plugins/vuetify'
 
 // 配置请求的根路径
 Vue.config.productionTip = false

@@ -3,22 +3,6 @@
     Home 组件
     <el-container>
       <!-- 导航栏区域 -->
-      <el-header>
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <div class="grid-content bg-purple"></div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple"></div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple"></div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple"></div>
-          </el-col>
-        </el-row>
-      </el-header>
 
       <!-- 页面中心区域 -->
       <el-main>Main</el-main>
@@ -26,18 +10,12 @@
       <!-- 页脚区域 -->
       <el-footer>Footer</el-footer>
     </el-container>
-    <el-button type="info" @click="logout">退出</el-button>
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    logout () {
-      window.sessionStorage.clear()
-      this.$router.push('/login')
-    }
-  }
+
 }
 </script>
 

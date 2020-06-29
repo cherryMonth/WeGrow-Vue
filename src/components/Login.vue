@@ -94,7 +94,6 @@ export default {
 <!-- less语法需要less-loader插件  -->
 <style lang='less' scoped>
 .login_container {
-  background-color: #2b4d6b;
   height: 100%;
 }
 .login_box {
@@ -102,6 +101,8 @@ export default {
   height: 300px;
   background-color: #fff;
   border-radius: 3px;
+  box-shadow: 0 0 10px #ddd;
+  border: 1px solid #eee; // 给图标box加边框
   // postiton 是自由移动
   position: absolute;
   left: 50%;
