@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <v-app id='keep'>
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" />
+    <v-app id="keep">
       <Navbar />
       <v-main>
         <router-view></router-view>
@@ -15,8 +16,8 @@ export default {
   name: 'App',
   components: { Navbar },
   data () {
+    // 向子组件传值，默认是用户未登录
     return {
-
     }
   }
 }

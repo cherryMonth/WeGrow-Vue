@@ -8,6 +8,11 @@ import Topic from '@/views/Topic'
 
 Vue.use(VueRouter)
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 // 当用户访问这些路由的时候，内容会填充到App.vue里面
 // App.vue如果要显示这些内容，需要添加<review-url></review-url>
 const routes = [{

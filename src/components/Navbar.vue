@@ -12,17 +12,14 @@
       <v-text-field solo-inverted rounded hide-details label="Search" prepend-inner-icon="search"></v-text-field>
       <!-- 当退出按钮向右浮动 -->
       <v-spacer></v-spacer>
-      <v-btn rounded @click="logout">
-        <span>Sign Out</span>
-        <v-icon right>exit_to_app</v-icon>
-      </v-btn>
+      <!-- 登出按钮 设置按钮形状为圆滑 并设置背景颜色 -->
+      <template>
+        <v-btn rounded @click="logout" v-if="verification">
+          <span>Sign Out</span>
+          <v-icon right>exit_to_app</v-icon>
+        </v-btn>
+      </template>
     </v-app-bar>
-
-    <!-- 登出按钮 设置按钮形状为圆滑 并设置背景颜色 -->
-    <v-btn rounded color="light">
-      <span>Sign Out</span>
-      <v-icon right>exit_to_app</v-icon>
-    </v-btn>
 
     <v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
       <v-list dense class="grey lighten-4">
@@ -33,16 +30,13 @@
             <v-col cols="6">
               <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
             </v-col>
-            <v-col cols="6" class="text-right">
-              <v-btn small text>edit</v-btn>
-            </v-col>
           </v-row>
           <!-- 当遍历到分割线时，绘制分割线 -->
           <v-divider v-else-if="item.divider" :key="i" dark class="my-4"></v-divider>
           <!-- 如果只是普通的菜单栏，那么绘制菜单项 -->
-          <v-list-item v-else :key="i" router :to='item.route'>
+          <v-list-item v-else :key="i" router :to="item.route">
             <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon large :color="item.color">{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title class="grey--text">{{ item.text }}</v-list-item-title>
@@ -56,24 +50,18 @@
 
 <script>
 export default {
-  props: {
-    source: String
-  },
   data: () => ({
     // 默认抽屉菜单不加载，当点击时表达式为真，开始加载
     drawer: false,
+    verification: window.sessionStorage.getItem('Authorization'),
     items: [
-      { icon: 'lightbulb_outline', text: 'Home', route: '/' },
+      { icon: 'lightbulb_outline', text: 'Home', route: '/', color: 'orange darken-2' },
       { divider: true },
-      { heading: 'Labels' },
-      { icon: 'add', text: 'Create new label' },
+      { heading: 'Public' },
+      { icon: 'dialpad', text: 'Topic', route: '/user_information', color: 'purple darken-2' },
+      { icon: 'people', text: 'Users', route: '/create_block', color: 'blue darken-2' },
       { divider: true },
-      { icon: 'archive', text: '个人中心', route: '/user_information' },
-      { icon: 'archive', text: '创建Block', route: '/create_block' },
-      { divider: true },
-      { icon: 'settings', text: 'Settings' },
-      { icon: 'delete', text: 'Trash' },
-      { icon: 'help', text: 'Help' }
+      { icon: 'help', text: 'Help', color: 'green darken-2' }
     ]
   }),
   methods: {
