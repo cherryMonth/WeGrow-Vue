@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './components/Login.vue'
 import Home from './components/Home.vue'
+import Block from '@/views/Block'
+import UserInformation from '@/views/UserInformation'
+import Topic from '@/views/Topic'
 
 Vue.use(VueRouter)
 
@@ -18,6 +21,23 @@ const routes = [{
 {
   path: '/home',
   component: Home
+},
+{
+  path: '/create_block',
+  name: 'block',
+  component: Block
+},
+// 用户个人信息
+{
+  path: '/user_information',
+  name: 'user_information',
+  component: UserInformation
+},
+// 专题信息，只能下拉加载
+{
+  path: '/topic:id',
+  name: Topic,
+  component: UserInformation
 }
 ]
 
