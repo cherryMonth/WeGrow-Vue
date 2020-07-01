@@ -14,7 +14,7 @@
       <v-spacer></v-spacer>
       <!-- 登出按钮 设置按钮形状为圆滑 并设置背景颜色 -->
       <template>
-        <v-btn rounded @click="logout" v-if="verification">
+        <v-btn rounded @click="logout" v-if="$store.getters.token">
           <span>Sign Out</span>
           <v-icon right>exit_to_app</v-icon>
         </v-btn>
@@ -53,7 +53,6 @@ export default {
   data: () => ({
     // 默认抽屉菜单不加载，当点击时表达式为真，开始加载
     drawer: false,
-    verification: window.sessionStorage.getItem('Authorization'),
     items: [
       { icon: 'lightbulb_outline', text: 'Home', route: '/', color: 'orange darken-2' },
       { divider: true },
@@ -66,7 +65,7 @@ export default {
   }),
   methods: {
     logout () {
-      window.sessionStorage.clear()
+      this.$store.commit('changeToken', '')
       this.$router.push('/login')
     }
   }

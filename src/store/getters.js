@@ -1,10 +1,10 @@
 const getters = {
-  username: state => state.user.username,
-  token: state => state.user.token,
-  avatarHash: state => state.user.avatar,
-  rolesList: state => state.user.name,
-  permissionList: state => state.user.roles,
-  email: state => state.permission.addRouters,
-  AboutMe: state => state.permission.routers
+  username: state => state.username,
+  token: state => state.token,
+  avatarHash: state => state.avatarHash,
+  rolesList: state => state.rolesList,
+  permissionList: state => state.permissionList,
+  email: state => state.email,
+  aboutMe: state => state.aboutMe
 }
 export default getters

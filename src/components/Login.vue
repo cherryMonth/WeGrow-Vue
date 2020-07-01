@@ -79,10 +79,7 @@ export default {
           // 用户登陆成功之后需要把token保存到sessionStorage中
           // 1.1 除了登陆窗口，其他的API都需要登陆才能访问
           // 1.2 token只应在当前网页打开期间生效
-          window.sessionStorage.setItem(
-            'Authorization',
-            res.data.tokenHead + ' ' + res.data.token
-          )
+          this.$store.commit('changeToken', res.data.tokenHead + ' ' + res.data.token)
           await this.$router.push('/home')
         }
       })

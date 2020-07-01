@@ -21,7 +21,7 @@ const routes = [{
 },
 {
   path: '/',
-  redirect: '/login'
+  redirect: '/home'
 },
 {
   path: '/home',
@@ -49,7 +49,7 @@ const routes = [{
 const router = new VueRouter({
   routes
 })
-
+console.log(sessionStorage.getItem('store'))
 // 路由导航守卫
 router.beforeEach((to, from, next) => {
   // to 将要访问的路径
@@ -57,8 +57,8 @@ router.beforeEach((to, from, next) => {
   // next 是一个函数，表示放行，可以添加参数表示强制跳转的路径
   if (to.path === '/login') return next()
   // 先获取token
-  const token = window.sessionStorage.getItem('Authorization')
-  if (!token) return next('/login')
+  const store = sessionStorage.getItem('store')
+  if (!store) return next('/login')
   next()
 }
 )
