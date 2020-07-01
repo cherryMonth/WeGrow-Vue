@@ -65,7 +65,8 @@ export default {
   }),
   methods: {
     logout () {
-      this.$store.commit('changeToken', '')
+      this.$store.commit('clear')
+      sessionStorage.clear()
       this.$router.push('/login')
     }
   }

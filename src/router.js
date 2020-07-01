@@ -49,14 +49,14 @@ const routes = [{
 const router = new VueRouter({
   routes
 })
-console.log(sessionStorage.getItem('store'))
+
 // 路由导航守卫
 router.beforeEach((to, from, next) => {
   // to 将要访问的路径
   // from 从那个路径跳过来
   // next 是一个函数，表示放行，可以添加参数表示强制跳转的路径
   if (to.path === '/login') return next()
-  // 先获取token
+  // 由于路由无法触发钩子，所以先从session中获取消息，只要存在store，就证明登陆过
   const store = sessionStorage.getItem('store')
   if (!store) return next('/login')
   next()

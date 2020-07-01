@@ -80,6 +80,9 @@ export default {
           // 1.1 除了登陆窗口，其他的API都需要登陆才能访问
           // 1.2 token只应在当前网页打开期间生效
           this.$store.commit('changeToken', res.data.tokenHead + ' ' + res.data.token)
+
+          // 把vuex数据持久化到sessionStorage
+          sessionStorage.setItem('store', JSON.stringify(this.$store.state))
           await this.$router.push('/home')
         }
       })
