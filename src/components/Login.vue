@@ -1,38 +1,38 @@
 <template>
-    <div class="login_container">
-      <div class="login_box">
-        <!-- 头像区域 -->
-        <div class="avatar_box">
-          <img src="../assets/logo.png" alt />
-        </div>
-        <!-- 登陆表单区域 -->
-        <!-- 数据绑定, ref即为该表单的引用，可以再script区域对表单进行操作 -->
-        <el-form
-          label-width="0px"
-          ref="loginFormRef"
-          :model="loginForm"
-          :rules="loginFormRules"
-          class="login_form"
-        >
-          <!-- 用户名，校验需要将 Form-Item 的 prop 属性设置为需校验的字段名即可 -->
-          <el-form-item prop="username">
-            <!-- 绑定数据对象到属性 -->
-            <!-- el-input的属性不能以空格结尾 -->
-            <!-- 双向绑定到对象属性 -->
-            <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
-          </el-form-item>
-          <!-- 密码 -->
-          <el-form-item prop="password">
-            <el-input type="password" v-model="loginForm.password" prefix-icon="el-icon-lock"></el-input>
-          </el-form-item>
-          <!-- 按钮 -->
-          <el-form-item class="tns">
-            <el-button type="primary" @click="login">登陆</el-button>
-            <el-button type="info" @click="resetLoginForm">重置</el-button>
-          </el-form-item>
-        </el-form>
+  <div class="login_container">
+    <div class="login_box">
+      <!-- 头像区域 -->
+      <div class="avatar_box">
+        <img src="../assets/logo.png" alt />
       </div>
+      <!-- 登陆表单区域 -->
+      <!-- 数据绑定, ref即为该表单的引用，可以再script区域对表单进行操作 -->
+      <el-form
+        label-width="0px"
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginFormRules"
+        class="login_form"
+      >
+        <!-- 用户名，校验需要将 Form-Item 的 prop 属性设置为需校验的字段名即可 -->
+        <el-form-item prop="username">
+          <!-- 绑定数据对象到属性 -->
+          <!-- el-input的属性不能以空格结尾 -->
+          <!-- 双向绑定到对象属性 -->
+          <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
+        </el-form-item>
+        <!-- 密码 -->
+        <el-form-item prop="password">
+          <el-input type="password" v-model="loginForm.password" prefix-icon="el-icon-lock"></el-input>
+        </el-form-item>
+        <!-- 按钮 -->
+        <el-form-item class="tns">
+          <el-button type="primary" @click="login" :loading="loading">登陆</el-button>
+          <el-button type="info" @click="resetLoginForm">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +53,8 @@ export default {
           { required: true, message: '请输入用户密码', trigger: 'blur' },
           { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -65,27 +66,24 @@ export default {
     login () {
       // 表单预验证，如果验证成功发起登陆请求
       // 指定方法为异步方法，需要await进行修饰
-      this.$refs.loginFormRef.validate(async valid => {
+      this.$refs.loginFormRef.validate(valid => {
         if (valid) {
           // 由于返回的信息只有data有效，所以直接可以从返回结果中获取data属性并指定其引用为res
-          const { data: res } = await this.$http.post(
-            '/user/login',
-            this.loginForm
-          )
-          if (res.code !== 200) {
-            return this.$message.error('用户登陆出错了哦。。。')
-          }
-          this.$message.success('用户登陆成功')
           // 用户登陆成功之后需要把token保存到sessionStorage中
           // 1.1 除了登陆窗口，其他的API都需要登陆才能访问
           // 1.2 token只应在当前网页打开期间生效
-          this.$store.commit('changeToken', res.data.tokenHead + ' ' + res.data.token)
-
           // 把vuex数据持久化到sessionStorage
-          sessionStorage.setItem('store', JSON.stringify(this.$store.state))
-          await this.$router.push('/home')
+          this.loading = true
+          this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.loading = false
+            this.$message.success('用户登陆成功')
+            this.$router.push({ path: '/' })
+          }).catch(() => {
+            this.loading = false
+          })
         }
-      })
+      }
+      )
     }
   }
 }

@@ -4,7 +4,7 @@
     <!-- 工具栏标题label -->
     <v-app-bar app clipped-left color="light">
       <!-- 添加左侧抽屉菜单栏 点击加载 -->
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
       <span class="title ml-3 mr-5">
         We
         <span class="font-weight-light">Grow</span>
@@ -65,9 +65,12 @@ export default {
   }),
   methods: {
     logout () {
-      this.$store.commit('clear')
-      sessionStorage.clear()
-      this.$router.push('/login')
+      this.$store.dispatch('LogOut').then(() => {
+        this.$message.success('用户注销成功')
+        this.$router.push({ path: '/login' })
+      }).catch(error => {
+        return Promise.reject(error)
+      })
     }
   }
 }

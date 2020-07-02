@@ -5,6 +5,8 @@ import Home from './components/Home.vue'
 import Block from '@/views/Block'
 import UserInformation from '@/views/UserInformation'
 import Topic from '@/views/Topic'
+import store from '@/store'
+import { Message } from 'element-ui'
 
 Vue.use(VueRouter)
 
@@ -55,10 +57,25 @@ router.beforeEach((to, from, next) => {
   // to 将要访问的路径
   // from 从那个路径跳过来
   // next 是一个函数，表示放行，可以添加参数表示强制跳转的路径
-  if (to.path === '/login') return next()
-  // 由于路由无法触发钩子，所以先从session中获取消息，只要存在store，就证明登陆过
-  const store = sessionStorage.getItem('store')
-  if (!store) return next('/login')
+
+  // 如果是访问登陆页面，那么直接跳转
+  if (to.path === '/login') { return next() }
+
+  // 如果sessionStorage不存在内容，那么就需要用户进行登陆
+  if (!sessionStorage.getItem('token')) return next('/login')
+
+  // 如果用户的信息为空，则向后端发起请求获取用户信息
+  if (store.getters.rolesList.length === 0) {
+    store.dispatch('GetInfo').then(res => {
+      next()
+    }).catch(err => {
+      // 如果请求失败，则自动注销并返回到登录页面
+      store.dispatch('LogOut').then(() => {
+        Message.error(err || 'Verification failed, please login again')
+        next({ path: '/login' })
+      })
+    })
+  }
   next()
 }
 )

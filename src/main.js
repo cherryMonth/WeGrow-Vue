@@ -11,7 +11,7 @@ import store from '@/store/'
 
 // 配置请求的根路径
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'http://localhost:8082'
+axios.defaults.baseURL = 'http://127.0.0.1:8082'
 Vue.prototype.$http = axios
 
 new Vue({

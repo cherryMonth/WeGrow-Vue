@@ -16,9 +16,9 @@ export default {
   name: 'App',
   // vue的钩子，当组件刷新时把vuex数据持久化到sessionStorage中，防止数据丢失
   created () {
-    // 在页面加载时读取sessionStorage里的状态信息
-    if (sessionStorage.getItem('store')) {
-      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem('store'))))
+    // 在页面加载时读取sessionStorage里的token信息
+    if (sessionStorage.getItem('token')) {
+      this.$store.commit('changeToken', sessionStorage.getItem('token'))
     }
   },
   components: { Navbar },
