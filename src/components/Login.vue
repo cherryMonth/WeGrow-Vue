@@ -14,8 +14,12 @@
         :rules="loginFormRules"
         class="login_form"
       >
+        <div class="normal-title">
+          <router-link class="sign" :to="{name: 'login'}">登陆</router-link>
+          <router-link class="register" :to="{name: 'register'}">注册</router-link>
+        </div>
         <!-- 用户名，校验需要将 Form-Item 的 prop 属性设置为需校验的字段名即可 -->
-        <el-form-item prop="username">
+        <el-form-item prop="username" class="form-title">
           <!-- 绑定数据对象到属性 -->
           <!-- el-input的属性不能以空格结尾 -->
           <!-- 双向绑定到对象属性 -->
@@ -39,6 +43,7 @@
 export default {
   data () {
     return {
+      title: '登陆-WeGrow',
       // 这是登陆表单的数据对象
       loginForm: {
         username: '',
@@ -138,5 +143,31 @@ export default {
 .tns {
   display: flex; // 弹性分布
   justify-content: flex-end; // 右部对其
+}
+
+.sign {
+  font-size: 30px;
+  color: #ea6f5a;
+  border-bottom: 2px solid #ea6f5a;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.register {
+  margin-left: 20%;
+  font-size: 30px;
+  padding: 10px;
+  text-decoration: none;
+  color: #969696;
+}
+
+.normal-title {
+  margin-left: 20%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-title {
+  margin-top: 20px;
 }
 </style>

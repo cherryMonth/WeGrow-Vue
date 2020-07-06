@@ -7,6 +7,7 @@ import UserInformation from '@/views/UserInformation'
 import Topic from '@/views/Topic'
 import store from '@/store'
 import { Message } from 'element-ui'
+import Register from '@/components/Register'
 
 Vue.use(VueRouter)
 
@@ -18,33 +19,62 @@ VueRouter.prototype.push = function push (location) {
 // 当用户访问这些路由的时候，内容会填充到App.vue里面
 // App.vue如果要显示这些内容，需要添加<review-url></review-url>
 const routes = [{
+  name: 'login',
   path: '/login',
+  meta: {
+    title: '登陆-WeGrow'
+  },
   component: Login
 },
 {
+  name: 'register',
+  meta: {
+    title: '注册-WeGrow'
+  },
+  path: '/register',
+  component: Register
+},
+{
+  name: 'root',
+  meta: {
+    title: '首页'
+  },
   path: '/',
   redirect: '/home'
 },
 {
+  name: 'home',
   path: '/home',
+  meta: {
+    title: 'Home'
+  },
   component: Home
 },
 {
   path: '/create_block',
+  meta: {
+    title: '创作'
+  },
   name: 'block',
   component: Block
 },
 // 用户个人信息
 {
   path: '/user_information',
+  meta: {
+    title: '用户中心'
+  },
   name: 'user_information',
   component: UserInformation
 },
 // 专题信息，只能下拉加载
 {
   path: '/topic:id',
-  name: Topic,
-  component: UserInformation
+  meta: {
+    title: '主题广场'
+  },
+  name: 'topic',
+  component: Topic
 }
 ]
 
@@ -58,8 +88,13 @@ router.beforeEach((to, from, next) => {
   // from 从那个路径跳过来
   // next 是一个函数，表示放行，可以添加参数表示强制跳转的路径
 
-  // 如果是访问登陆页面，那么直接跳转
-  if (to.path === '/login') { return next() }
+  // 设置跳转页的标题
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+
+  // 如果是访问登陆页面或者注册页面，那么直接跳转
+  if (to.name === 'login' || to.name === 'register') { return next() }
 
   // 如果sessionStorage不存在内容，那么就需要用户进行登陆
   if (!sessionStorage.getItem('token')) return next('/login')
