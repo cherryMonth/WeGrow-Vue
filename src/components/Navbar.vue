@@ -2,9 +2,9 @@
   <div>
     <!-- 导航栏 -->
     <!-- 工具栏标题label -->
-    <v-app-bar app clipped-left color="light">
+    <v-app-bar app clipped-left color="light" style="padding: 10px; height: 80px;">
       <!-- 添加左侧抽屉菜单栏 点击加载 -->
-      <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <span class="title ml-3 mr-5">
         We
         <span class="font-weight-light">Grow</span>
@@ -13,11 +13,29 @@
       <!-- 当退出按钮向右浮动 -->
       <v-spacer></v-spacer>
       <!-- 登出按钮 设置按钮形状为圆滑 并设置背景颜色 -->
-      <template>
-        <v-btn rounded @click="logout" v-if="$store.getters.token">
-          <span>Sign Out</span>
-          <v-icon right>exit_to_app</v-icon>
-        </v-btn>
+      <template v-if="$store.getters.token">
+        <!-- 添加通知信息栏 -->
+        <v-row justify="center">
+          <v-col cols="2">
+            <v-tab>
+              <v-badge color="red" content="6">
+                <v-icon color="#3cc2ff" x-large>notifications</v-icon>
+              </v-badge>
+            </v-tab>
+          </v-col>
+          <!-- 添加私信信息栏 -->
+          <v-col cols="3">
+            <v-tab>
+              <v-badge color="red" content="0">
+                <v-icon color="#0084ff" x-large>chat</v-icon>
+              </v-badge>
+            </v-tab>
+          </v-col>
+          <!-- 添加用户Profile栏 -->
+          <v-col cols="3">
+            <UserAvatar />
+          </v-col>
+        </v-row>
       </template>
     </v-app-bar>
 
@@ -49,6 +67,8 @@
 </template>
 
 <script>
+import UserAvatar from '@/components/UserAvatar'
+
 export default {
   data: () => ({
     // 默认抽屉菜单不加载，当点击时表达式为真，开始加载
@@ -57,21 +77,12 @@ export default {
       { icon: 'lightbulb_outline', text: 'Home', route: '/', color: 'orange darken-2' },
       { divider: true },
       { heading: 'Public' },
-      { icon: 'dialpad', text: 'Topic', route: '/user_information', color: 'purple darken-2' },
-      { icon: 'people', text: 'Users', route: '/create_block', color: 'blue darken-2' },
+      { icon: 'dialpad', text: 'Topic', route: '/topic', color: 'purple darken-2' },
+      { icon: 'people', text: 'Users', route: '/users', color: 'blue darken-2' },
       { divider: true },
       { icon: 'help', text: 'Help', color: 'green darken-2' }
     ]
   }),
-  methods: {
-    logout () {
-      this.$store.dispatch('LogOut').then(() => {
-        this.$message.success('用户注销成功')
-        this.$router.push({ path: '/login' })
-      }).catch(error => {
-        return Promise.reject(error)
-      })
-    }
-  }
+  components: { UserAvatar }
 }
 </script>

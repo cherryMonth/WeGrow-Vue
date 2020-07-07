@@ -5,9 +5,11 @@ import Home from './components/Home.vue'
 import Block from '@/views/Block'
 import UserInformation from '@/views/UserInformation'
 import Topic from '@/views/Topic'
+import Users from '@/views/Users'
 import store from '@/store'
 import { Message } from 'element-ui'
 import Register from '@/components/Register'
+import Settings from '@/components/Settings'
 
 Vue.use(VueRouter)
 
@@ -69,12 +71,32 @@ const routes = [{
 },
 // 专题信息，只能下拉加载
 {
-  path: '/topic:id',
+  path: '/topic',
   meta: {
     title: '主题广场'
   },
   name: 'topic',
+  component: Users
+},
+{
+  path: '/users',
+  meta: {
+    title: '用户广场'
+  },
+  name: 'users',
   component: Topic
+},
+{
+  path: '/settings',
+  meta: {
+    title: '设置'
+  },
+  name: 'settings',
+  component: Settings
+},
+{
+  path: '/logout',
+  name: 'logout'
 }
 ]
 
@@ -93,11 +115,23 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
 
-  // 如果是访问登陆页面或者注册页面，那么直接跳转
+  // 如果是访问登陆页面或者注册页面或者退出，那么直接跳转
   if (to.name === 'login' || to.name === 'register') { return next() }
 
   // 如果sessionStorage不存在内容，那么就需要用户进行登陆
-  if (!sessionStorage.getItem('token')) return next('/login')
+  if (!sessionStorage.getItem('token')) {
+    Message.error('请先进行登陆!')
+    return next('/login')
+  }
+
+  if (to.name === 'logout') {
+    store.dispatch('LogOut').then(() => {
+      Message.success('用户注销成功')
+      next({ path: '/login' })
+    }).catch(error => {
+      return Promise.reject(error)
+    })
+  }
 
   // 如果用户的信息为空，则向后端发起请求获取用户信息
   if (store.getters.rolesList.length === 0) {

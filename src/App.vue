@@ -3,7 +3,8 @@
     <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" />
     <v-app id="keep">
       <Navbar />
-      <v-main>
+      <!-- 设置距离nav-bar的距离 -->
+      <v-main style="margin-top: 2%">
         <router-view></router-view>
       </v-main>
     </v-app>

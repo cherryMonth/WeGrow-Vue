@@ -71,12 +71,12 @@ export default {
     return {
       // 这是登陆表单的数据对象
       registerForm: {
-        email: 'a@qq.com',
-        username: 'asd',
-        aboutMe: '1234',
+        email: '',
+        username: '',
+        aboutMe: '',
         avatarHash: '',
-        password: '123456',
-        checkPass: '123456'
+        password: '',
+        checkPass: ''
       },
       registerFormRules: {
         username: [
@@ -189,7 +189,7 @@ export default {
 }
 .register_box {
   width: 450px;
-  height: 600px;
+  min-height: 650px;
   background-color: #fff;
   border-radius: 3px;
   box-shadow: 0 0 10px #ddd;
