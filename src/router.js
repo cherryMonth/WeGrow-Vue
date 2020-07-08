@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from './components/Login.vue'
 import Home from './components/Home.vue'
 import Block from '@/views/Block'
+import DisplayBlock from '@/views/DisplayBlock'
 import UserInformation from '@/views/UserInformation'
 import Topic from '@/views/Topic'
 import Users from '@/views/Users'
@@ -53,12 +54,25 @@ const routes = [{
   component: Home
 },
 {
-  path: '/create_block',
+  path: '/block/:id',
+  name: 'edit_block',
+  meta: {
+    title: '创作'
+  },
+  component: Block
+},
+{
+  path: '/block',
   meta: {
     title: '创作'
   },
   name: 'block',
   component: Block
+},
+{
+  path: '/b/:id',
+  name: 'displayBlock',
+  component: DisplayBlock
 },
 // 用户个人信息
 {

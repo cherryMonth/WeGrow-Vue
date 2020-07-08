@@ -4,7 +4,7 @@
     <v-app id="keep">
       <Navbar />
       <!-- 设置距离nav-bar的距离 -->
-      <v-main style="margin-top: 2%">
+      <v-main style="margin-top: 1%">
         <router-view></router-view>
       </v-main>
     </v-app>

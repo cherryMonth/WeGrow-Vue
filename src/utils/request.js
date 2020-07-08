@@ -34,7 +34,8 @@ service.interceptors.response.use(
     // 401:未登录则清除所有用户信息，然后重新登陆，其他页面需要打印消息警告;
     if (res.code >= 400 && res.code < 500) {
       Message({
-        message: res.message,
+        // 报错信息只取value
+        message: Object.values(JSON.parse(res.message)),
         type: 'warning',
         duration: 3 * 1000
       })
@@ -48,10 +49,10 @@ service.interceptors.response.use(
         })
       }
       return Promise.resolve(response)
-    // 如果遇到五百则打印错误警告
+      // 如果遇到五百则打印错误警告
     } else if (res.code >= 500) {
       Message({
-        message: res.message,
+        message: Object.values(JSON.parse(res.message)),
         type: 'error',
         duration: 3 * 1000
       })
@@ -63,7 +64,7 @@ service.interceptors.response.use(
   ,
   error => {
     Message({
-      message: error.message,
+      message: Object.values(JSON.parse(error.message)),
       type: 'error',
       duration: 3 * 1000
     })
