@@ -28,6 +28,12 @@ service.interceptors.response.use(
                 * code为非200是抛错 可结合自己业务进行修改
                 */
     const res = response.data
+    let message = response.data.message
+    try {
+      message = JSON.parse(res.message)
+    } catch (e) {
+      message = res.message
+    }
     // 如果状态码是200 那么直接返回
     if (res.code === 200) return Promise.resolve(response)
 
@@ -35,7 +41,7 @@ service.interceptors.response.use(
     if (res.code >= 400 && res.code < 500) {
       Message({
         // 报错信息只取value
-        message: Object.values(JSON.parse(res.message)),
+        message: message,
         type: 'warning',
         duration: 3 * 1000
       })
@@ -52,7 +58,7 @@ service.interceptors.response.use(
       // 如果遇到五百则打印错误警告
     } else if (res.code >= 500) {
       Message({
-        message: Object.values(JSON.parse(res.message)),
+        message: message,
         type: 'error',
         duration: 3 * 1000
       })
@@ -63,8 +69,14 @@ service.interceptors.response.use(
   }
   ,
   error => {
+    let message = error.message
+    try {
+      message = JSON.parse(message)
+    } catch (e) {
+      message = error.message
+    }
     Message({
-      message: Object.values(JSON.parse(error.message)),
+      message: message,
       type: 'error',
       duration: 3 * 1000
     })

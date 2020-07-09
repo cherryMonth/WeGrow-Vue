@@ -28,7 +28,7 @@ export function updateBlock (params, id) {
 
 export function getBlock (id) {
   return request({
-    url: '/user/info',
+    url: '/block/' + id,
     method: 'get'
   })
 }
