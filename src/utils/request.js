@@ -28,13 +28,20 @@ service.interceptors.response.use(
                 * code为非200是抛错 可结合自己业务进行修改
                 */
     const res = response.data
+    let message = response.data.message
+    try {
+      message = JSON.parse(res.message)
+    } catch (e) {
+      message = res.message
+    }
     // 如果状态码是200 那么直接返回
     if (res.code === 200) return Promise.resolve(response)
 
     // 401:未登录则清除所有用户信息，然后重新登陆，其他页面需要打印消息警告;
     if (res.code >= 400 && res.code < 500) {
       Message({
-        message: res.message,
+        // 报错信息只取value
+        message: message,
         type: 'warning',
         duration: 3 * 1000
       })
@@ -48,10 +55,10 @@ service.interceptors.response.use(
         })
       }
       return Promise.resolve(response)
-    // 如果遇到五百则打印错误警告
+      // 如果遇到五百则打印错误警告
     } else if (res.code >= 500) {
       Message({
-        message: res.message,
+        message: message,
         type: 'error',
         duration: 3 * 1000
       })
@@ -62,8 +69,14 @@ service.interceptors.response.use(
   }
   ,
   error => {
+    let message = error.message
+    try {
+      message = JSON.parse(message)
+    } catch (e) {
+      message = error.message
+    }
     Message({
-      message: error.message,
+      message: message,
       type: 'error',
       duration: 3 * 1000
     })

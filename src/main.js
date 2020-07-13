@@ -8,11 +8,19 @@ import axios from 'axios'
 import './plugins/element.js'
 import vuetify from './plugins/vuetify'
 import store from '@/store/'
+import VueWechatTitle from 'vue-wechat-title'
+
+// 引入mavonEditor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 // 配置请求的根路径
 Vue.config.productionTip = false
+Vue.use(VueWechatTitle)
 axios.defaults.baseURL = 'http://127.0.0.1:8082'
 Vue.prototype.$http = axios
+
+Vue.use(mavonEditor)
 
 new Vue({
   router,
