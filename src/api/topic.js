@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getTopicList (params) {
   return request({
-    url: '/block/create',
+    url: '/topic/create',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
