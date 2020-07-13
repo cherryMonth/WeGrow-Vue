@@ -9,25 +9,24 @@
             <v-text-field label="请输入题目（最多30字）" single-line v-model="block.title"></v-text-field>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item prop="topicId">
-            <el-popover placement="top" v-model="visible">
-              <el-select v-model="block.topicId" placeholder="请选择">
-                <el-option
-                  v-for="item in block.topicList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-              <el-button
-                type="primary"
-                slot="reference"
-                icon="el-icon-s-promotion"
-                style="font-size: 15px"
-              ></el-button>
-            </el-popover>
+            <el-select v-model="block.topicId" placeholder="请选择内容标签" v-loadmore="loadTopic">
+              <el-option
+                v-for="item in topicPage.topicList"
+                :key="item.index"
+                :value="item.id"
+              >{{item.topicName}}</el-option>
+            </el-select>
           </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            type="primary"
+            @click="submit"
+            icon="el-icon-s-promotion"
+            style="font-size: 15px"
+          ></el-button>
         </el-col>
       </el-row>
 
@@ -48,23 +47,29 @@
 <script>
 
 import { createBlock, getBlock, updateBlock } from '@/api/block'
+import { getTopicList } from '@/api/topic'
 
 export default {
   data () {
     const validateTitle = (rule, value, callback) => {
       if (value === '') {
-        this.$notify({
-          message: '题目不能为空',
-          type: 'warning',
-          duration: 3000
+        this.notifyPromise = this.notifyPromise.then(() => {
+          this.$notify({
+            message: '题目不能为空',
+            type: 'warning',
+            duration: 3000
+          })
         })
         return false
       } else if (value.length > 30) {
-        this.$notify({
-          message: '题目的长度不能超过30个字符',
-          type: 'warning',
-          duration: 3000
+        this.notifyPromise = this.notifyPromise.then(() => {
+          this.$notify({
+            message: '题目的长度不能超过30个字符',
+            type: 'warning',
+            duration: 3000
+          })
         })
+
         return false
       } else {
         callback()
@@ -72,10 +77,12 @@ export default {
     }
     const validateContent = (rule, value, callback) => {
       if (value === '') {
-        this.$notify({
-          message: '内容不能为空',
-          type: 'warning',
-          duration: 3000
+        this.notifyPromise = this.notifyPromise.then(() => {
+          this.$notify({
+            message: '内容不能为空',
+            type: 'warning',
+            duration: 3000
+          })
         })
         return false
       } else {
@@ -84,14 +91,16 @@ export default {
     }
     const validateTopicId = (rule, value, callback) => {
       if (value === '' || !value) {
-        this.$notify({
-          message: '专题不能为空',
-          type: 'warning',
-          duration: 3000
+        this.notifyPromise = this.notifyPromise.then(() => {
+          this.$notify({
+            message: '专题不能为空',
+            type: 'warning',
+            duration: 3000
+          })
         })
+
         return false
       } else {
-        console.log(value)
         callback()
       }
     }
@@ -100,8 +109,7 @@ export default {
         title: '',
         topicId: '',
         status: '1', // 默认是直接发布状态
-        blockContent: '',
-        topicList: []
+        blockContent: ''
       },
       blockRules: {
         title: [
@@ -115,10 +123,19 @@ export default {
         ]
       },
       loading: false,
-      visible: false
+      notifyPromise: Promise.resolve(),
+      topicPage: {
+        pageSize: 8,
+        pageNum: 1,
+        busy: false,
+        total: 0,
+        totalPage: 0,
+        topicList: []
+      }
     }
   },
   mounted () {
+    this.loadTopic()
     if (this.$route.query.id) {
       this.loading = true
       getBlock(this.$route.query.id).then(response => {
@@ -132,6 +149,16 @@ export default {
     }
   },
   methods: {
+    loadTopic () {
+      getTopicList({ pageNum: this.topicPage.pageNum, pageSize: this.topicPage.pageSize }).then(response => {
+        if (response.data.data.list.length > 0 && response.data.data.totalPage >= this.topicPage.pageNum) {
+          this.topicPage.topicList = this.topicPage.topicList.concat(response.data.data.list)
+          this.topicPage.total = response.data.data.total
+          this.topicPage.totalPage = response.data.data.totalPage
+          this.topicPage.pageNum += 1
+        }
+      })
+    },
     save_action_success (response) {
       this.loading = false
       this.$notify({
@@ -210,5 +237,10 @@ export default {
 
 .editor-title {
   padding: 20px;
+}
+
+.infinite-scroll {
+  height: 80px;
+  overflow-y: auto;
 }
 </style>
