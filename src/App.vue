@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet"> -->
     <v-app id="keep">
       <Navbar />
       <!-- 设置距离nav-bar的距离 -->
