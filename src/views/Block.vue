@@ -108,7 +108,7 @@ export default {
       block: {
         title: '',
         topicId: '',
-        status: '1', // 默认是直接发布状态
+        status: '1', // 默认是草稿状态
         blockContent: ''
       },
       blockRules: {
@@ -180,7 +180,7 @@ export default {
       // 当用户点击保存时设置文章的状态为2，即为草稿状态
       this.loading = true
       // 由于我们在request层已经处理了异常状态，所以不需要加异常处理了
-      this.block.status = 2
+      this.block.status = 1
       // 如果当前页面存在query.id，那么即更新该文章ID对应的文章
       if (this.$route.query.id) {
         updateBlock(JSON.stringify(this.block), this.$route.query.id).then(response => {
@@ -202,7 +202,7 @@ export default {
       this.$refs.block.validate(valid => {
         if (valid) {
           // 当用户提交之后，如果当前是草稿页面，则修改文章状态为1，并重定向到显示页面
-          this.block.status = 1
+          this.block.status = 2
           if (this.$route.query.id) {
             this.loading = true
             updateBlock(JSON.stringify(this.block), this.$route.query.id).then(response => {
