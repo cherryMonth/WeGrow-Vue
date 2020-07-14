@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 // 在不允许多次import 同一组件，会报错
-import { Button, Form, FormItem, Input, Message, Header, Main, Footer, Container, Row, Col, Upload, Table, Loading, Notification, Select, Option } from 'element-ui'
+import { Button, Form, FormItem, Input, Message, Header, Main, Footer, Container, Row, Col, Upload, Table, Loading, Notification, Select, Option, Link } from 'element-ui'
 
 // 组件注册
 Vue.use(Button)
@@ -18,6 +18,7 @@ Vue.use(Upload)
 Vue.use(Table)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Link)
 Vue.use(Loading.directive)
 Vue.component(Notification.name, Notification)
 

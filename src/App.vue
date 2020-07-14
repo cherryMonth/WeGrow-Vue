@@ -30,3 +30,11 @@ export default {
   }
 }
 </script>
+
+<style lang='less' scoped>
+#app {
+  width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+}
+</style>

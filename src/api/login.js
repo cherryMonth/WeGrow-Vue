@@ -27,6 +27,13 @@ export function getInfo () {
   })
 }
 
+export function getUserSummaryInfo (id) {
+  return request({
+    url: '/user/summaryInfo/' + id,
+    method: 'get'
+  })
+}
+
 export function createUser (params) {
   return request({
     url: '/user/register',
