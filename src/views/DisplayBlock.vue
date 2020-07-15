@@ -1,37 +1,42 @@
 <template>
   <el-container id="editor" class="editor-preview" :center="true">
     <div v-wechat-title="$route.meta.title=block.title"></div>
-    <el-main>
+    <el-main class="main-container">
       <h1>{{block.title}}</h1>
-      <el-row type="flex">
-        <el-col :span="1" style="margin-left : 10%">
+      <!-- 使用户信息行与文章内容同列，并且位置不随着窗口变化而变化 -->
+      <el-row style="margin-top: 10px;margin-bottom: 10px">
+        <el-col :span="1" :offset="6">
           <v-avatar rounded="false">
             <img :src="user.avatar" :alt="user.username" />
           </v-avatar>
         </el-col>
-        <el-col :span="1" style="margin-left: 3%; min-width: 200px;">
-          <el-link  :underline='false' style="color: #606266; font-weight: 600; float: left">{{user.userName}}</el-link>
-          <br>
-           <el-link  :underline='false' style="color: #606266; cursor: default; float: left">{{user.aboutMe}}</el-link>
+        <el-col :span="1" style="min-width: 200px;">
+          <el-link
+            :underline="false"
+            style="color: #606266; font-weight: 600; float: left"
+          >{{user.userName}}</el-link>
+          <br />
+          <el-link
+            :underline="false"
+            style="color: #606266; cursor: default; float: left"
+          >{{user.aboutMe}}</el-link>
         </el-col>
-        <el-col :span="15" :offset="8">
+        <el-col :span="1" :offset="6">
           <el-button type="primary">关注他</el-button>
         </el-col>
       </el-row>
-      <el-row type="flex">
-        <mavon-editor
-          class="editor"
-          :value="block.blockContent"
-          :subfield="false"
-          :defaultOpen="'preview'"
-          :toolbarsFlag="false"
-          :editable="false"
-          :boxShadowStyle="boxShadowStyle()"
-          :box-shadow="true"
-          :scrollStyle="true"
-          :ishljs="true"
-        />
-      </el-row>
+      <mavon-editor
+        class="editor"
+        :value="block.blockContent"
+        :subfield="false"
+        :defaultOpen="'preview'"
+        :toolbarsFlag="false"
+        :editable="false"
+        :boxShadowStyle="boxShadowStyle()"
+        :box-shadow="true"
+        :scrollStyle="true"
+        :ishljs="true"
+      />
     </el-main>
   </el-container>
 </template>
@@ -96,9 +101,8 @@ export default {
 
 .editor {
   min-height: 60vh;
-  width: 690px;
-  left: 50%; // box向右偏移50%
-  transform: translate(-50%); // 然后要减去自身的50%才能让中心居中
+  width: 700px;
+  left: 25%; // box向右偏移50%
 }
 
 .el-main {

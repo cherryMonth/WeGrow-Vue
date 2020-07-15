@@ -1,14 +1,12 @@
 <template>
-  <div id="app">
-    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet"> -->
-    <v-app id="keep">
-      <Navbar />
-      <!-- 设置距离nav-bar的距离 -->
-      <v-main style="margin-top: 1% ;background-color: #fbfbfb;">
-        <router-view></router-view>
-      </v-main>
-    </v-app>
-  </div>
+  <!-- <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet"> -->
+  <v-app id="app">
+    <Navbar />
+    <!-- 设置距离nav-bar的距离 -->
+    <v-main style="margin-top: 1% ;">
+      <router-view></router-view>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -32,9 +30,24 @@ export default {
 </script>
 
 <style lang='less' scoped>
+// 设置宽度值，当浏览器窗口的宽度小于数值时，元素不再进行缩放
 #app {
-  width: 1000px;
   margin-right: auto;
+  width: 1960px;
   margin-left: auto;
+}
+</style>
+
+<!-- 设置全局css, 把背景色调成#fbfbfb -->
+<!-- 当子容器的宽度小于给定的宽度时，出现滚轮 -->
+<style>
+html,
+body {
+  background-color: #fbfbfb;
+  overflow: auto;
+}
+
+#app {
+  background-color: #fbfbfb;
 }
 </style>

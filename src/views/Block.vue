@@ -230,7 +230,7 @@ export default {
 .div-editor {
   position: relative;
   z-index: 0;
-  width: 60%;
+  width: 80%;
   left: 50%; // box向右偏移50%
   transform: translate(-50%); // 然后要减去自身的50%才能让中心居中
 }
