@@ -4,6 +4,7 @@ import { setToken, removeToken } from '@/utils/auth'
 const user = {
   // 用户的个人信息
   state: {
+    userId: '',
     username: '',
     token: '',
     avatarHash: '',
@@ -16,6 +17,9 @@ const user = {
   mutations: {
     changeUserName (state, username) {
       state.username = username
+    },
+    changeUserId (state, userId) {
+      state.userId = userId
     },
     changeToken (state, token) {
       state.token = token
@@ -38,6 +42,7 @@ const user = {
     clear (state) {
       state.username = ''
       state.token = ''
+      state.userId = ''
       state.avatarHash = ''
       state.rolesList = []
       state.permissionList = []
@@ -83,11 +88,12 @@ const user = {
           } else {
             reject(response)
           }
-          commit('changeUserName', data.username)
+          commit('changeUserName', data.UserName)
           commit('changeAboutMe', data.AboutMe)
           commit('changeAvatarHash', data.AvatarHash)
+          commit('changeUserId', data.UserId)
           commit('changePermissionList', data.PermissionList)
-          commit('changeEmail', data.email)
+          commit('changeEmail', data.Email)
           resolve(response)
         }).catch(error => {
           reject(error)

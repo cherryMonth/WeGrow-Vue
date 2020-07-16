@@ -11,7 +11,7 @@
       <!-- 设置用户Profile -->
       <v-list dense>
         <v-list-item-group>
-          <v-list-item v-for="(item, index) in items" :key="index" :to="{name: item.name}">
+          <v-list-item v-for="(item, index) in items" :key="index" :to="{name: item.name, params: {id: $store.getters.userId}}">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>

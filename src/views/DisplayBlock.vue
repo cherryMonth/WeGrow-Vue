@@ -81,7 +81,6 @@ export default {
             this.user.userName = response.data.data.userName
             this.user.aboutMe = response.data.data.aboutMe || '这个人很懒什么都没留下~'
             this.user.avatar = response.data.data.avatarHash
-            console.log(this.user)
           })
         }
         this.loading = false

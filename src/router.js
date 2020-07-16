@@ -76,7 +76,7 @@ const routes = [{
 },
 // 用户个人信息
 {
-  path: '/user_information',
+  path: '/u/:id',
   meta: {
     title: '用户中心'
   },
