@@ -11,7 +11,7 @@
         </el-col>
         <el-col :span="4">
           <el-form-item prop="topicId">
-            <el-select v-model="block.topicId" placeholder="请选择内容标签" v-loadmore="loadTopic">
+            <el-select v-model="block.topicId" placeholder="请选择内容标签" v-topicloadmore="loadTopic">
               <el-option
                 v-for="item in topicPage.topicList"
                 :key="item.index"
@@ -127,7 +127,6 @@ export default {
       topicPage: {
         pageSize: 8,
         pageNum: 1,
-        busy: false,
         total: 0,
         totalPage: 0,
         topicList: []

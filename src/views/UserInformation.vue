@@ -53,11 +53,24 @@
       </el-footer>
     </el-container>
 
-    <el-container style="width: 1200px;margin-left: 20%;height: 500px;margin-top: 20px; ">
+    <el-container style="width: 1200px;margin-left: 20%;height: 650px;margin-top: 20px; ">
       <el-container style="box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);">
-        <el-header class="el-block-header" style="height: 20px">header</el-header>
-        <el-divider></el-divider>
-        <el-main class="el-block-main">main</el-main>
+        <el-header class="el-block-header" style="height: 20px">
+          <template>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+              <!-- <el-tab-pane label="动态" name="first" class="el-tab">ta的动态</el-tab-pane> -->
+              <el-tab-pane label="回答" name="second" class="el-tab">ta的回答</el-tab-pane>
+              <el-tab-pane label="提问" name="third" class="el-tab">ta的提问</el-tab-pane>
+              <el-tab-pane label="文章" name="fourth" class="el-tab">ta的文章</el-tab-pane>
+            </el-tabs>
+          </template>
+        </el-header>
+        <div class="el-block-main">
+          <div v-for="(item, $index) in targetlist.List" :key="$index">
+            {{item}}
+          </div>
+          <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        </div>
       </el-container>
       <el-aside width="200px">aside</el-aside>
     </el-container>
@@ -66,6 +79,7 @@
 
 <script>
 import { getUserSummaryInfo } from '@/api/login'
+import { getBlockListByUserId } from '@/api/block'
 
 export default {
   data () {
@@ -75,6 +89,17 @@ export default {
         userName: '',
         aboutMe: '',
         avatar: ''
+      },
+      activeName: 'second',
+      loading: false,
+      notifyPromise: Promise.resolve(),
+      targetlist: {
+        pageSize: 1,
+        pageNum: 1,
+        busy: false,
+        total: 0,
+        totalPage: 0,
+        List: []
       }
     }
   },
@@ -83,9 +108,26 @@ export default {
       this.loading = true
       getUserSummaryInfo(this.$route.params.id).then(response => {
         this.user.userName = response.data.data.userName
-        this.user.userId = response.data.data.userId
         this.user.aboutMe = response.data.data.aboutMe || '这个人很懒什么都没留下~'
         this.user.avatar = response.data.data.avatarHash
+      })
+    }
+  },
+  methods: {
+    handleClick (tab, event) {
+      console.log(tab, event)
+    },
+    infiniteHandler ($state) {
+      getBlockListByUserId({ userId: this.$route.params.id, pageNum: this.targetlist.pageNum, pageSize: this.targetlist.pageSize }).then(response => {
+        if (response.data.data.list.length > 0 && response.data.data.totalPage >= this.targetlist.pageNum) {
+          this.targetlist.List = this.targetlist.List.concat(response.data.data.list)
+          this.targetlist.total = response.data.data.total
+          this.targetlist.totalPage = response.data.data.totalPage
+          this.targetlist.pageNum += 1
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
       })
     }
   }
@@ -101,6 +143,9 @@ export default {
 
 .el-block-main {
   color: #333;
+  margin-top: 40px;
+  height: 900px;
+  overflow-y: auto;
   text-align: center;
   line-height: 200px;
 }
@@ -111,5 +156,10 @@ export default {
   color: #333;
   text-align: center;
   line-height: 200px;
+}
+
+.el-tab {
+  float: left;
+  font-weight: 600;
 }
 </style>

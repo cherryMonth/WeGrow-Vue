@@ -10,6 +10,7 @@ import vuetify from './plugins/vuetify'
 import store from '@/store/'
 import VueWechatTitle from 'vue-wechat-title'
 import infiniteScroll from 'vue-infinite-scroll'
+import InfiniteLoading from 'vue-infinite-loading'
 
 // 引入mavonEditor
 import mavonEditor from 'mavon-editor'
@@ -21,10 +22,10 @@ Vue.use(VueWechatTitle)
 axios.defaults.baseURL = 'http://127.0.0.1:8082'
 Vue.prototype.$http = axios
 Vue.use(infiniteScroll)
-
+Vue.use(InfiniteLoading)
 Vue.use(mavonEditor)
 
-Vue.directive('loadmore', {
+Vue.directive('topicloadmore', {
   bind (el, binding) {
     // 获取element-ui定义好的scroll盒子
     const SELECTWRAP_DOM = el.querySelector('.el-select-dropdown .el-select-dropdown__wrap')
