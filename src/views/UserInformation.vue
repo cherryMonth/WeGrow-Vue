@@ -53,7 +53,7 @@
       </el-footer>
     </el-container>
 
-    <el-container style="width: 1200px;margin-left: 20%;height: 650px;margin-top: 20px; ">
+    <el-container style="width: 1200px;margin-left: 20%;margin-top: 20px;height: 100%">
       <el-container style="box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);">
         <el-header class="el-block-header" style="height: 20px">
           <template>
@@ -65,14 +65,16 @@
             </el-tabs>
           </template>
         </el-header>
-        <div class="el-block-main">
-          <div v-for="(item, $index) in targetlist.List" :key="$index">
-            {{item}}
+        <el-main>
+          <div class="el-block-main">
+            <div v-for="(item, $index) in targetlist.List" :key="$index">
+              {{item}}
+              <el-divider></el-divider>
+            </div>
           </div>
-          <infinite-loading @infinite="infiniteHandler"></infinite-loading>
-        </div>
+        </el-main>
       </el-container>
-      <el-aside width="200px">aside</el-aside>
+      <el-aside width="200px" class="el-aside">aside</el-aside>
     </el-container>
   </div>
 </template>
@@ -94,41 +96,50 @@ export default {
       loading: false,
       notifyPromise: Promise.resolve(),
       targetlist: {
-        pageSize: 1,
+        pageSize: 5,
         pageNum: 1,
-        busy: false,
         total: 0,
         totalPage: 0,
         List: []
-      }
+      },
+      timeout: null
     }
   },
   mounted () {
     if (this.$route.params.id) {
-      this.loading = true
       getUserSummaryInfo(this.$route.params.id).then(response => {
         this.user.userName = response.data.data.userName
         this.user.aboutMe = response.data.data.aboutMe || '这个人很懒什么都没留下~'
         this.user.avatar = response.data.data.avatarHash
       })
+      this.scroll()
+      this.infiniteHandler()
     }
   },
   methods: {
     handleClick (tab, event) {
       console.log(tab, event)
     },
-    infiniteHandler ($state) {
+    infiniteHandler () {
+      this.loading = true
       getBlockListByUserId({ userId: this.$route.params.id, pageNum: this.targetlist.pageNum, pageSize: this.targetlist.pageSize }).then(response => {
         if (response.data.data.list.length > 0 && response.data.data.totalPage >= this.targetlist.pageNum) {
           this.targetlist.List = this.targetlist.List.concat(response.data.data.list)
           this.targetlist.total = response.data.data.total
           this.targetlist.totalPage = response.data.data.totalPage
           this.targetlist.pageNum += 1
-          $state.loaded()
-        } else {
-          $state.complete()
+          this.loading = false
         }
       })
+    },
+    scroll () {
+      const body = document.body
+      body.addEventListener('scroll', e => {
+        const bottom = document.body.scrollHeight - document.body.scrollTop - document.body.clientHeight
+        if (bottom < 1) {
+          this.infiniteHandler()
+        }
+      }, true)
     }
   }
 }
@@ -144,13 +155,14 @@ export default {
 .el-block-main {
   color: #333;
   margin-top: 40px;
-  height: 900px;
-  overflow-y: auto;
   text-align: center;
   line-height: 200px;
 }
 
 .el-aside {
+  position: sticky;
+  /* position: -webkit-sticky; */
+  top: 0;
   margin-left: 10px;
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
   color: #333;
