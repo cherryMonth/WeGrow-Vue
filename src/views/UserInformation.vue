@@ -167,7 +167,6 @@ export default {
             } else {
               element.css = false
             }
-            console.log(element)
           })
           this.targetlist.List = this.targetlist.List.concat(response.data.data.list)
           this.targetlist.total = response.data.data.total

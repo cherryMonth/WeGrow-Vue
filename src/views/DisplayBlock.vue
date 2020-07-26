@@ -81,7 +81,6 @@ export default {
     if (this.$route) {
       this.loading = true
       getUserBlock(this.$route.params.id).then(response => {
-        console.log(response.data.data)
         if (response.data.code === 200) {
           this.block.title = response.data.data.title
           this.block.blockContent = response.data.data.blockContent

@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
 // 导入全局样式表
 import './assets/css/global.css'
+import 'mavon-editor/dist/css/index.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
+import Vue from 'vue'
+import App from './App.vue'
 import axios from 'axios'
 import './plugins/element.js'
 import vuetify from './plugins/vuetify'
@@ -14,12 +15,12 @@ import InfiniteLoading from 'vue-infinite-loading'
 
 // 引入mavonEditor
 import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import router from './router'
 
 // 配置请求的根路径
 Vue.config.productionTip = false
 Vue.use(VueWechatTitle)
-axios.defaults.baseURL = 'http://192.168.124.24:8082'
+axios.defaults.baseURL = 'http://127.0.0.1:8082'
 Vue.prototype.$http = axios
 Vue.use(infiniteScroll)
 Vue.use(InfiniteLoading)
