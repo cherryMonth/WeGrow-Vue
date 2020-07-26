@@ -33,10 +33,20 @@
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
-          <el-input type="password" v-model="registerForm.password" prefix-icon="el-icon-lock" placeholder="用户密码"></el-input>
+          <el-input
+            type="password"
+            v-model="registerForm.password"
+            prefix-icon="el-icon-lock"
+            placeholder="用户密码"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="checkPass">
-          <el-input type="password" v-model="registerForm.checkPass" autocomplete="off" placeholder="请重复输入用户密码"></el-input>
+          <el-input
+            type="password"
+            v-model="registerForm.checkPass"
+            autocomplete="off"
+            placeholder="请重复输入用户密码"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-upload
@@ -44,6 +54,7 @@
             class="avatar-uploader"
             accept="image/jpeg, image/gif, image/png"
             action="#"
+            :limit="1"
             :http-request="httpRequest"
             :before-upload="beforeAvatarUpload"
             :on-remove="removeAvatar"
@@ -65,11 +76,14 @@
 
 <script>
 import { createUser } from '@/api/login'
+import { getBase64, beforeAvatarUpload } from '@/api/image'
 
 export default {
   data () {
     return {
       // 这是登陆表单的数据对象
+      getBase64,
+      beforeAvatarUpload,
       registerForm: {
         email: '',
         username: '',
@@ -111,43 +125,13 @@ export default {
     }
   },
   methods: {
-    getBase64 (file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        let fileResult = ''
-        reader.readAsDataURL(file)
-        // 开始转
-        reader.onload = function () {
-          fileResult = reader.result
-        }
-        // 转 失败
-        reader.onerror = function (error) {
-          reject(error)
-        }
-        // 转 结束  咱就 resolve 出去
-        reader.onloadend = function () {
-          resolve(fileResult)
-        }
-      })
-    },
     httpRequest (data) {
-      this.getBase64(data.file).then(resBase64 => {
+      getBase64(data.file).then(resBase64 => {
         this.registerForm.avatarHash = 'data:image/jpeg;base64,' + resBase64.split(',')[1]
       })
     },
     removeAvatar () {
       this.registerForm.avatarHash = ''
-    },
-    beforeAvatarUpload (file) {
-      const isLegitimate = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif'
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLegitimate) {
-        this.$message.error('上传头像图片只能是 JPG/PNG/GIF 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isLegitimate && isLt2M
     },
     resetRegisterForm () {
       // #refs为vue的引用句柄，然后获取我们定义的表单并运行element ui的重置功能

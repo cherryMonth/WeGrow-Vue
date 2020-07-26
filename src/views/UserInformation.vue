@@ -67,14 +67,49 @@
         </el-header>
         <el-main>
           <div class="el-block-main">
+            <el-divider></el-divider>
             <div v-for="(item, $index) in targetlist.List" :key="$index">
-              {{item}}
-              <el-divider></el-divider>
+              <el-row :gutter="10">
+                <router-link
+                  style="text-decoration: none;"
+                  :to="{name: 'displayBlock', params: item}"
+                >
+                  <h1 class="el-block-title">{{item.title}}</h1>
+                </router-link>
+                <el-col :span="1">
+                  <v-avatar :rounded="false" class="el-user-vatar">
+                    <img :src="user.avatar" :alt="user.userName" />
+                  </v-avatar>
+                </el-col>
+                <el-col :span="1" style="min-width: 350px;text-align: left;margin-left: 20px;">
+                  <router-link
+                    style="text-decoration: none;"
+                    class="el-block-username"
+                    :to="{name: 'user_information', params: user.userId}"
+                  >{{user.userName}}</router-link>
+                  <br />
+                  <el-link
+                    :underline="false"
+                    class="el-block-info"
+                    style=" color: rgb(96, 98, 102);"
+                  >{{user.aboutMe}}</el-link>
+                </el-col>
+              </el-row>
+              <el-row style="margin-top: 5px; text-align: left">
+                <el-col :span="5" v-if="item.blockImage">
+                  <el-image :src="item.blockImage" lazy class="el-block-image"></el-image>
+                </el-col>
+                <el-col
+                  :span="19"
+                  style="width: word-wrap:break-word;word-break:break-all; "
+                >{{item.blockContent}}</el-col>
+              </el-row>
+              <el-divider class="el-divider"></el-divider>
             </div>
           </div>
         </el-main>
       </el-container>
-      <el-aside width="200px" class="el-aside">aside</el-aside>
+      <el-aside style="height: 500px; top: 10%">用户信息</el-aside>
     </el-container>
   </div>
 </template>
@@ -111,6 +146,7 @@ export default {
         this.user.userName = response.data.data.userName
         this.user.aboutMe = response.data.data.aboutMe || '这个人很懒什么都没留下~'
         this.user.avatar = response.data.data.avatarHash
+        this.user.userId = response.data.data.userId
       })
       this.scroll()
       this.infiniteHandler()
@@ -124,6 +160,15 @@ export default {
       this.loading = true
       getBlockListByUserId({ userId: this.$route.params.id, pageNum: this.targetlist.pageNum, pageSize: this.targetlist.pageSize }).then(response => {
         if (response.data.data.list.length > 0 && response.data.data.totalPage >= this.targetlist.pageNum) {
+          response.data.data.list.forEach(element => {
+            if (element.blockContent.length > 200) {
+              element.css = true
+              element.blockContent = element.blockContent.substr(0, 200) + '...'
+            } else {
+              element.css = false
+            }
+            console.log(element)
+          })
           this.targetlist.List = this.targetlist.List.concat(response.data.data.list)
           this.targetlist.total = response.data.data.total
           this.targetlist.totalPage = response.data.data.totalPage
@@ -145,33 +190,70 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='less' scoped>
 .el-block-header {
   color: #333;
+  top: 0;
   text-align: center;
   line-height: 60px;
 }
 
 .el-block-main {
   color: #333;
-  margin-top: 40px;
+  margin-top: 80px;
   text-align: center;
-  line-height: 200px;
 }
 
 .el-aside {
   position: sticky;
-  /* position: -webkit-sticky; */
   top: 0;
   margin-left: 10px;
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
   color: #333;
-  text-align: center;
-  line-height: 200px;
 }
 
 .el-tab {
   float: left;
   font-weight: 600;
+}
+
+.el-user-vatar {
+  height: 38px;
+  width: 38px;
+  top: 1px;
+}
+
+.el-block-title {
+  text-align: left;
+  padding: 8px;
+  color: black;
+  font-weight: 600;
+  font-family: Helvetica Neue;
+  font-size: 18px;
+}
+
+.el-block-username {
+  color: #606266;
+  font-weight: 600;
+  font-family: Helvetica Neue;
+  font-size: 15px;
+}
+
+.el-block-info {
+  cursor: default;
+  font-family: Helvetica Neue;
+  font-size: 10px;
+}
+
+.el-divider {
+  border-top: 1px dashed #e8eaec;
+  margin: 8px 0;
+  background: 0 0;
+}
+
+.el-block-image {
+  height: 100px;
+  border-radius: 5px;
+  padding-right: 15px;
 }
 </style>

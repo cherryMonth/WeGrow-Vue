@@ -19,11 +19,18 @@ import 'mavon-editor/dist/css/index.css'
 // 配置请求的根路径
 Vue.config.productionTip = false
 Vue.use(VueWechatTitle)
-axios.defaults.baseURL = 'http://127.0.0.1:8082'
+axios.defaults.baseURL = 'http://192.168.124.24:8082'
 Vue.prototype.$http = axios
 Vue.use(infiniteScroll)
 Vue.use(InfiniteLoading)
 Vue.use(mavonEditor)
+
+window.addEventListener('storage', function (event) {
+  // event.key确认修改的locaStorage变化key，event.newValue是修改后的值
+  if (event.key === 'token') {
+    sessionStorage.setItem('token', event.newValue)
+  }
+})
 
 Vue.directive('loadmore', {
   bind (el, binding) {

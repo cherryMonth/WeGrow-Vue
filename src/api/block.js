@@ -33,6 +33,13 @@ export function getBlock (id) {
   })
 }
 
+export function getUserBlock (id) {
+  return request({
+    url: '/block/user/' + id,
+    method: 'get'
+  })
+}
+
 export function getBlockListByUserId (params) {
   return request({
     url: '/block/BlocklistByUserId',

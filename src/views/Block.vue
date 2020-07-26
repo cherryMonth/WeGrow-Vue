@@ -3,18 +3,34 @@
     <div v-wechat-title="$route.meta.title=block.title"></div>
     <el-form label-width="0px" ref="block" :model="block" :rules="blockRules" v-loading="loading">
       <!-- 设置组件的相对高度，可以动态的占满空间 -->
+      <el-form-item style="margin-left: 15px;width: 100%">
+        <el-upload
+          ref="upload"
+          class="avatar-uploader"
+          accept="image/jpeg, image/gif, image/png"
+          action="#"
+          :limit="1"
+          :http-request="httpRequest"
+          :before-upload="beforeAvatarUpload"
+          :on-remove="removeAvatar"
+        >
+          <img v-if="block.blockImage" :src="block.blockImage" class="avatar" />
+          <i v-else class="el-icon-upload avatar-uploader-icon" style="font-size: 67px"></i>
+        </el-upload>
+      </el-form-item>
       <el-row :gutter="20" class="editor-title">
-        <el-col :span="10" align="middle">
+        <el-col :span="15" align="middle">
           <el-form-item prop="title">
             <v-text-field label="请输入题目（最多30字）" single-line v-model="block.title"></v-text-field>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="5" :offset="2">
           <el-form-item prop="topicId">
             <el-select v-model="block.topicId" placeholder="请选择内容标签" v-loadmore="loadTopic">
               <el-option
                 v-for="item in topicPage.topicList"
                 :key="item.index"
+                :label="item.topicName"
                 :value="item.id"
               >{{item.topicName}}</el-option>
             </el-select>
@@ -48,6 +64,7 @@
 
 import { createBlock, getBlock, updateBlock } from '@/api/block'
 import { getTopicList } from '@/api/topic'
+import { getBase64, beforeAvatarUpload } from '@/api/image'
 
 export default {
   data () {
@@ -105,11 +122,13 @@ export default {
       }
     }
     return {
+      beforeAvatarUpload,
       block: {
         title: '',
         topicId: '',
         status: '2', // 默认是草稿状态
-        blockContent: ''
+        blockContent: '',
+        blockImage: ''
       },
       blockRules: {
         title: [
@@ -142,12 +161,21 @@ export default {
           this.block.title = response.data.data.title
           this.block.blockContent = response.data.data.blockContent
           this.block.topicId = response.data.data.topicId
+          this.block.blockImage = response.data.data.blockImage
         }
         this.loading = false
       })
     }
   },
   methods: {
+    httpRequest (data) {
+      getBase64(data.file).then(resBase64 => {
+        this.block.blockImage = 'data:image/jpeg;base64,' + resBase64.split(',')[1]
+      })
+    },
+    removeAvatar () {
+      this.block.blockImage = ''
+    },
     loadTopic () {
       getTopicList({ pageNum: this.topicPage.pageNum, pageSize: this.topicPage.pageSize }).then(response => {
         if (response.data.data.list.length > 0 && response.data.data.totalPage >= this.topicPage.pageNum) {
@@ -229,7 +257,7 @@ export default {
 .div-editor {
   position: relative;
   z-index: 0;
-  width: 80%;
+  width: 800px;
   left: 50%; // box向右偏移50%
   transform: translate(-50%); // 然后要减去自身的50%才能让中心居中
 }
@@ -241,5 +269,32 @@ export default {
 .infinite-scroll {
   height: 80px;
   overflow-y: auto;
+}
+
+.avatar-uploader {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+  position: absolute; // 把box的位置设置为自由移动
+  left: 50%; // box向右偏移50%
+  top: 50%;
+  transform: translate(-50%, -50%); // 然后要减去自身的50%才能让中心居中
+}
+.avatar {
+  width: 800px;
+  height: 500px;
+  overflow-y: hidden;
 }
 </style>

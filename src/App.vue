@@ -33,7 +33,7 @@ export default {
 // 设置宽度值，当浏览器窗口的宽度小于数值时，元素不再进行缩放
 #app {
   margin-right: auto;
-  width: 1960px;
+  width: 1500px;
   margin-left: auto;
 }
 </style>
