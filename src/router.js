@@ -112,8 +112,10 @@ const routes = [{
 {
   path: '/logout',
   name: 'logout'
-}, {
-  path: 'comment',
+},
+{
+  name: 'Comment',
+  path: '/Comment',
   component: Comment
 }
 ]

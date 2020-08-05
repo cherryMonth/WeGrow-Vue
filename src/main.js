@@ -11,8 +11,6 @@ import './plugins/ant'
 import vuetify from './plugins/vuetify'
 import store from '@/store/'
 import VueWechatTitle from 'vue-wechat-title'
-import infiniteScroll from 'vue-infinite-scroll'
-import InfiniteLoading from 'vue-infinite-loading'
 
 // 引入mavonEditor
 import mavonEditor from 'mavon-editor'
@@ -24,8 +22,6 @@ Vue.config.productionTip = false
 Vue.use(VueWechatTitle)
 axios.defaults.baseURL = 'http://127.0.0.1:8082'
 Vue.prototype.$http = axios
-Vue.use(infiniteScroll)
-Vue.use(InfiniteLoading)
 Vue.use(mavonEditor)
 
 window.addEventListener('storage', function (event) {
