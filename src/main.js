@@ -7,6 +7,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import './plugins/element.js'
+import './plugins/ant'
 import vuetify from './plugins/vuetify'
 import store from '@/store/'
 import VueWechatTitle from 'vue-wechat-title'
@@ -16,6 +17,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 // 引入mavonEditor
 import mavonEditor from 'mavon-editor'
 import router from './router'
+import './plugins/ant-design-vue.js'
 
 // 配置请求的根路径
 Vue.config.productionTip = false

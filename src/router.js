@@ -11,6 +11,7 @@ import store from '@/store'
 import { Message } from 'element-ui'
 import Register from '@/components/Register'
 import Settings from '@/components/Settings'
+import Comment from '@/components/Comment'
 
 Vue.use(VueRouter)
 
@@ -111,6 +112,9 @@ const routes = [{
 {
   path: '/logout',
   name: 'logout'
+}, {
+  path: 'comment',
+  component: Comment
 }
 ]
 
