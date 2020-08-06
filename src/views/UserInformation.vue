@@ -178,6 +178,7 @@ export default {
     },
     scroll () {
       const body = document.body
+      body.style = 'height:1600px;overflow-y:auto'
       body.addEventListener('scroll', e => {
         const bottom = document.body.scrollHeight - document.body.scrollTop - document.body.clientHeight
         if (bottom < 1) {
