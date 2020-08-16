@@ -48,7 +48,7 @@
             placeholder="请重复输入用户密码"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="avatarHash">
           <el-upload
             ref="upload"
             class="avatar-uploader"
@@ -106,6 +106,7 @@ export default {
           { required: true, message: '请输入用户邮箱', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ],
+        avatarHash: [{ required: true, message: '头像不能为空', trigger: 'blur' }],
         checkPass: [
           {
             validator: (rule, value, callback) => {
