@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <v-menu open-on-hover offset-y>

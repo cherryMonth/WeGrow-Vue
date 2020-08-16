@@ -178,7 +178,7 @@ export default {
     },
     scroll () {
       const body = document.body
-      body.style = 'height:1600px;overflow-y:auto'
+      body.style = 'height:99vh;overflow-y:auto'
       body.addEventListener('scroll', e => {
         const bottom = document.body.scrollHeight - document.body.scrollTop - document.body.clientHeight
         if (bottom < 1) {
@@ -191,6 +191,10 @@ export default {
 </script>
 
 <style lang='less' scoped>
+html {
+  overflow: hidden;
+}
+
 .el-block-header {
   color: #333;
   top: 0;
