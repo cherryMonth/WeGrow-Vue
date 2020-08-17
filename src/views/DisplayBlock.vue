@@ -119,10 +119,7 @@
                     >回复</span>
                   </el-col>
                   <el-col :span="3" v-else>
-                    <span
-                      class="el-icon-chat-dot-round comment-list"
-                      @click="unsetReplyId()"
-                    >取消回复</span>
+                    <span class="el-icon-chat-dot-round comment-list" @click="unsetReplyId()">取消回复</span>
                   </el-col>
                   <el-col :span="2">
                     <span class="el-icon-caret-top comment-list">点赞</span>
@@ -347,9 +344,9 @@ export default {
       })
     },
     handleSubmit () {
-      if (this.commentParams.content.length === 0) {
+      if (this.commentParams.content.length === 0 || this.commentParams.content.length > 140) {
         this.$notify({
-          message: '评论内容不能为空~',
+          message: '评论内容长度不符合要求哦~',
           type: 'warning',
           duration: 3000
         })
@@ -373,9 +370,9 @@ export default {
       })
     },
     handleReplySubmit () {
-      if (this.commentParams.replyContent.length === 0) {
+      if (this.commentParams.replyContent.length === 0 || this.commentParams.replyContent.length > 140) {
         this.$notify({
-          message: '评论内容不能为空~',
+          message: '回复内容不符合要求哦~',
           type: 'warning',
           duration: 3000
         })

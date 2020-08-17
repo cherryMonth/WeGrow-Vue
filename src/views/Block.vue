@@ -197,10 +197,7 @@ export default {
     },
     submit_action_success (response) {
       this.loading = false
-      this.$message({
-        message: '发布成功',
-        type: 'success'
-      })
+      this.$message.success('发布成功')
       this.$router.push({ name: 'displayBlock', params: { id: response.data.data } })
     },
     $save () {
