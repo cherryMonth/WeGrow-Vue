@@ -20,7 +20,7 @@ import './plugins/ant-design-vue.js'
 // 配置请求的根路径
 Vue.config.productionTip = false
 Vue.use(VueWechatTitle)
-axios.defaults.baseURL = 'http://192.168.124.24:8082'
+axios.defaults.baseURL = 'http://' + process.env.VUE_APP_BASEURL
 Vue.prototype.$http = axios
 Vue.use(mavonEditor)
 
