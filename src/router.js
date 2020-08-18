@@ -11,6 +11,12 @@ import store from '@/store'
 import { Message } from 'element-ui'
 import Register from '@/components/Register'
 import Settings from '@/components/Settings'
+import Draft from '@/components/Draft'
+import Account from '@/components/Account'
+import Trash from '@/components/Trash'
+import Preference from '@/components/Preference'
+import Email from '@/components/Email'
+import Password from '@/components/Password'
 
 Vue.use(VueRouter)
 
@@ -102,6 +108,32 @@ const routes = [{
 },
 {
   path: '/settings',
+  children: [
+    {
+      path: 'draft',
+      component: Draft
+    },
+    {
+      path: 'account',
+      component: Account
+    },
+    {
+      path: 'trash',
+      component: Trash
+    },
+    {
+      path: 'email',
+      component: Email
+    },
+    {
+      path: 'password',
+      component: Password
+    },
+    {
+      path: 'preference',
+      component: Preference
+    }
+  ],
   meta: {
     title: '设置'
   },

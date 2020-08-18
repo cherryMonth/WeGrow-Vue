@@ -1,7 +1,7 @@
 <template>
   <div id="user">
     <el-container
-      style="width: 1200px;box-shadow: 0 1px 3px rgba(26,26,26,.1);margin-top: 10px; background-color: white; margin-left: 20%;"
+      style="width: 1200px;box-shadow: 0 1px 3px rgba(26,26,26,.1);margin-top: 10px; background-color: white; margin: auto;"
     >
       <div v-wechat-title="$route.meta.title=user.userName"></div>
       <!-- 使用户信息行与文章内容同列，并且位置不随着窗口变化而变化 -->
@@ -53,7 +53,7 @@
       </el-footer>
     </el-container>
 
-    <el-container style="width: 1200px;margin-left: 20%;margin-top: 20px;height: 100%">
+    <el-container style="width: 1200px;margin: auto;margin-top: 20px;height: 100%">
       <el-container style="box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);">
         <el-header class="el-block-header" style="height: 20px">
           <template>
