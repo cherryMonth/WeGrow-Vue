@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from '@/api/login'
 import { setToken, removeToken } from '@/utils/auth'
+import { updateInfo } from '@/api/user'
 
 const user = {
   // 用户的个人信息
@@ -57,6 +58,19 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
+          const data = response.data
+          const tokenStr = data.data.tokenHead + ' ' + data.data.token
+          setToken(tokenStr)
+          commit('changeToken', tokenStr)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    Update ({ commit }, userInfo) {
+      return new Promise((resolve, reject) => {
+        updateInfo(userInfo).then(response => {
           const data = response.data
           const tokenStr = data.data.tokenHead + ' ' + data.data.token
           setToken(tokenStr)

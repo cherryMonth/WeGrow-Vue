@@ -7,3 +7,11 @@ export function updatePassword (params) {
     data: params
   })
 }
+
+export function updateInfo (params) {
+  return request({
+    url: '/user/updateInfo',
+    method: 'post',
+    data: params
+  })
+}
