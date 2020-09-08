@@ -88,7 +88,6 @@ export default {
         // 如果请求失败，则自动注销并返回到登录页面
         this.$store.dispatch('LogOut').then(() => {
           this.$message.error(err || 'Verification failed, please login again')
-          this.$store({ path: '/login' })
         })
       })
     }

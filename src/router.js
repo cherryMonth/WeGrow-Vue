@@ -183,8 +183,6 @@ router.beforeEach((to, from, next) => {
   // 如果用户的信息为空，则向后端发起请求获取用户信息
   if (store.getters.rolesList.length === 0) {
     store.dispatch('GetInfo').then(res => {
-      console.log('asdasdasdsadasd')
-      console.log(store.getters.rolesList.length)
       next()
     }).catch(err => {
       // 如果请求失败，则自动注销并返回到登录页面
