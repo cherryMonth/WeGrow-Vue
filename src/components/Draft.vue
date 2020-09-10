@@ -8,7 +8,7 @@
             <el-row :gutter="10">
               <router-link
                 style="text-decoration: none;"
-                :to="{name: 'edit_block', query: {id: item.id}}"
+                :to="{path: '/block', query: {id: item.id}}"
               >
                 <h1 class="el-block-title">{{item.title}}</h1>
               </router-link>
